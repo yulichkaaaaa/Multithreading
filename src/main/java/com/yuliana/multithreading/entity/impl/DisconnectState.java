@@ -1,10 +1,10 @@
 package com.yuliana.multithreading.entity.impl;
 
-import com.yuliana.multithreading.entity.PierState;
+import com.yuliana.multithreading.entity.ShipState;
 import com.yuliana.multithreading.entity.Port;
 import com.yuliana.multithreading.entity.Ship;
 
-public class DisconnectState implements PierState {
+public class DisconnectState implements ShipState {
 
     private static final DisconnectState INSTANCE = new DisconnectState();
 
@@ -24,7 +24,7 @@ public class DisconnectState implements PierState {
 
     }
 
-    public void unloadShop(Ship ship) {
+    public void unloadShip(Ship ship) {
 
     }
 
