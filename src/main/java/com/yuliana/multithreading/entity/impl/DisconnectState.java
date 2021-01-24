@@ -8,8 +8,6 @@ public class DisconnectState implements ShipState {
 
     private static final DisconnectState INSTANCE = new DisconnectState();
 
-    private static final Port port = Port.getInstance();
-
     public static DisconnectState getInstance() {
         return INSTANCE;
     }
@@ -29,6 +27,7 @@ public class DisconnectState implements ShipState {
     }
 
     public void disconnect(Ship ship) {
-
+        Port.getInstance().disconnectShip(ship);
+        ship.setShipState(null);
     }
 }

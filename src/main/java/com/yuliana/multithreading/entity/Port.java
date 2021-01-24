@@ -21,6 +21,13 @@ public class Port {
         return port;
     }
 
+    private Port() {
+        for (int i = 0; i < PIERS_COUNT; i++) {
+            piers.add(new Pier());
+        }
+    }
+
+
     public void connectShip(Ship ship){
         try {
             locker.lock();

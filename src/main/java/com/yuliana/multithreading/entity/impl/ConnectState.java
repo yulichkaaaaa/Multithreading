@@ -7,7 +7,6 @@ import com.yuliana.multithreading.entity.Ship;
 public class ConnectState implements ShipState {
 
     private static final ConnectState INSTANCE = new ConnectState();
-    private Port port = Port.getInstance();
 
     public static ConnectState getInstance() {
         return INSTANCE;
@@ -16,7 +15,7 @@ public class ConnectState implements ShipState {
     private ConnectState() {}
 
     public void connect(Ship ship) {
-        port.connectShip(ship);
+        Port.getInstance().connectShip(ship);
         ship.setShipState(UnloadState.getInstance());
     }
 

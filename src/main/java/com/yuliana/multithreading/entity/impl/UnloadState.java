@@ -8,8 +8,6 @@ public class UnloadState implements ShipState {
 
     private static final UnloadState INSTANCE = new UnloadState();
 
-    private static final Port shipPort = Port.getInstance();
-
     public static UnloadState getInstance() {
         return INSTANCE;
     }
@@ -25,7 +23,8 @@ public class UnloadState implements ShipState {
     }
 
     public void unloadShip(Ship ship) {
-
+        Port.getInstance().unloadShip(ship);
+        ship.setShipState(LoadState.getInstance());
     }
 
     public void disconnect(Ship ship) {

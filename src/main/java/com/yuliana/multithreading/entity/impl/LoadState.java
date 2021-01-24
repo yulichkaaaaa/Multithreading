@@ -8,8 +8,6 @@ public class LoadState implements ShipState {
 
     private static final LoadState INSTANCE = new LoadState();
 
-    private static final Port port = Port.getInstance();
-
     public static LoadState getInstance() {
         return INSTANCE;
     }
@@ -21,7 +19,8 @@ public class LoadState implements ShipState {
     }
 
     public void loadShip(Ship ship) {
-
+        Port.getInstance().loadShip(ship);
+        ship.setShipState(DisconnectState.getInstance());
     }
 
     public void unloadShip(Ship ship) {
