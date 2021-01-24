@@ -39,7 +39,6 @@ public class Port {
             Pier pier = piers.pop();
             ship.setPier(pier);
             logger.log(Level.DEBUG, "ship {} connected", ship.getShipId());
-            System.out.println("connect" + ship.getShipId());
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -74,12 +73,10 @@ public class Port {
     public void disconnectShip(Ship ship){
         try {
             locker.lock();
-            if(ship.getPier() != null){
-                piers.add(ship.getPier());
-                condition.signal();
-            }
+            piers.add(ship.getPier());
+            condition.signal();
             ship.setPier(null);
-            logger.log(Level.DEBUG, "ship {} disconnected", ship.getShipId());
+            System.out.println("disconnect" + ship.getShipId());
         } finally {
             locker.unlock();
         }
