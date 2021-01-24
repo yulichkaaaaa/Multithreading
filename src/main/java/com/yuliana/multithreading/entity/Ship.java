@@ -1,8 +1,12 @@
 package com.yuliana.multithreading.entity;
 
+import com.yuliana.multithreading.entity.impl.ConnectState;
 import com.yuliana.multithreading.util.IdGenerator;
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.concurrent.TimeUnit;
 
 public class Ship extends Thread{
 
@@ -14,6 +18,7 @@ public class Ship extends Thread{
     private Pier pier;
 
     public Ship(int containersCount){
+        shipState = ConnectState.getInstance();
         shipId = IdGenerator.generateId();
         this.containersCount = containersCount;
     }
@@ -48,13 +53,13 @@ public class Ship extends Thread{
 
     @Override
     public void run() {
-        logger.debug("connect " + shipId);
+        logger.log(Level.DEBUG, "connect " + shipId);
         shipState.connect(this);
-        logger.debug("load " + shipId);
-        shipState.loadShip(this);
-        logger.debug("unload " + shipId);
+        logger.log(Level.DEBUG,"unload " + shipId);
         shipState.unloadShip(this);
-        logger.debug("disconnect " + shipId);
+        logger.log(Level.DEBUG, "load " + shipId);
+        shipState.loadShip(this);
+        logger.log(Level.DEBUG,"disconnect " + shipId);
         shipState.disconnect(this);
     }
 

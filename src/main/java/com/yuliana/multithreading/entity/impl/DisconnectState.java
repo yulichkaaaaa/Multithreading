@@ -28,6 +28,6 @@ public class DisconnectState implements ShipState {
 
     public void disconnect(Ship ship) {
         Port.getInstance().disconnectShip(ship);
-        ship.setShipState(null);
+        ship.setShipState(ConnectState.getInstance());
     }
 }

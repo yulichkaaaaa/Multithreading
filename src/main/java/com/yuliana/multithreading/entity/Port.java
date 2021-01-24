@@ -1,9 +1,11 @@
 package com.yuliana.multithreading.entity;
 
+import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayDeque;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Port {
@@ -11,11 +13,12 @@ public class Port {
     private static final Logger logger = LogManager.getLogger();
     private static final Port port = new Port();
     private static final int STORE_CAPACITY = 100;
-    private static final int PIERS_COUNT = 8;
+    private static final int PIERS_COUNT = 6;
 
     private ArrayDeque<Pier> piers = new ArrayDeque<>(PIERS_COUNT);
     private int freeContainers = STORE_CAPACITY;
     private ReentrantLock locker = new ReentrantLock();
+    private Condition condition = locker.newCondition();
 
     public static Port getInstance() {
         return port;
@@ -27,17 +30,18 @@ public class Port {
         }
     }
 
-
     public void connectShip(Ship ship){
         try {
             locker.lock();
-            if (!piers.isEmpty()) {
-                Pier pier = piers.pop();
-                ship.setPier(pier);
-                logger.debug("ship {} connected", ship.getShipId());
-            } else {
-                logger.debug("No available pier");
+            while (piers.isEmpty()){
+                condition.await();
             }
+            Pier pier = piers.pop();
+            ship.setPier(pier);
+            logger.log(Level.DEBUG, "ship {} connected", ship.getShipId());
+            System.out.println("connect" + ship.getShipId());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } finally {
             locker.unlock();
         }
@@ -70,8 +74,12 @@ public class Port {
     public void disconnectShip(Ship ship){
         try {
             locker.lock();
-            piers.add(ship.getPier());
+            if(ship.getPier() != null){
+                piers.add(ship.getPier());
+                condition.signal();
+            }
             ship.setPier(null);
+            logger.log(Level.DEBUG, "ship {} disconnected", ship.getShipId());
         } finally {
             locker.unlock();
         }
