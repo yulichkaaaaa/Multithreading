@@ -76,7 +76,6 @@ public class Port {
             piers.add(ship.getPier());
             condition.signal();
             ship.setPier(null);
-            System.out.println("disconnect" + ship.getShipId());
         } finally {
             locker.unlock();
         }
